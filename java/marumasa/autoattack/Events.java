@@ -1,6 +1,7 @@
 package marumasa.autoattack;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.logging.log4j.LogManager;
@@ -16,6 +17,8 @@ public class Events {
     public void tick(TickEvent.ClientTickEvent event) {
         if (mc.gameMode == null || mc.player == null || mc.crosshairPickEntity == null) return;
         if (!mc.options.keyAttack.isDown() || mc.player.getAttackStrengthScale(0) != 1) return;
+        LivingEntity entity = (LivingEntity) mc.crosshairPickEntity;
+        if (entity.hurtTime != 0 || entity.deathTime != 0) return;
         logger.info("attack");
         mc.gameMode.attack(mc.player, mc.crosshairPickEntity);
     }
